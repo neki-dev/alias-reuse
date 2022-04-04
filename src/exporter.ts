@@ -1,17 +1,16 @@
-import { Alias } from "./types";
-
 import path from 'path';
+import { Alias } from './types';
 
 type Modificators = {
   alias: (value: string) => string
   path: (value: string) => any
-}
+};
 
 export interface IExporter {
-  forTsconfig: () => object,
-  forWebpack: () => object,
-  forVite: () => object,
-  forJest: () => object,
+  forTsconfig: () => object
+  forWebpack: () => object
+  forVite: () => object
+  forJest: () => object
 }
 
 export default function exporter(pathToRoot: string, aliases: Alias[]): IExporter {
@@ -52,4 +51,4 @@ export default function exporter(pathToRoot: string, aliases: Alias[]): IExporte
       });
     },
   };
-};
+}

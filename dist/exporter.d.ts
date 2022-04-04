@@ -1,4 +1,4 @@
-import { Alias } from "./types";
+import { Alias } from './types';
 export interface IExporter {
     forTsconfig: () => object;
     forWebpack: () => object;

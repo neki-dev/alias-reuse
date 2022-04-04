@@ -18,6 +18,14 @@ npm i alias-reuse --save-dev
 * ### Usage
 
 ```js
+alias(rootDir: string)
+  .fromTsconfig/*Webpack,Vite,Object*/(pathToConfig: string)
+  .forJest/*Tsconfig,Webpack,Vite*/()
+```
+
+* ### Example
+
+```js
 const alias = require('alias-reuse');
 
 // webpack.config.js

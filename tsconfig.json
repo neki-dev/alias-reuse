@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
+    "outDir": "./dist",
     "module": "commonjs",
-    "target": "es2017",
+    "target": "esnext",
     "esModuleInterop": true,
     "declaration": true
   },
-  "include": ["./**/*.ts"]
+  "include": ["./src/**/*.ts"]
 }
