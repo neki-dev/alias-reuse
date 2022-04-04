@@ -18,9 +18,9 @@ npm i alias-reuse --save-dev
 * ### Usage
 
 ```js
-alias(rootDir: string)
-  .fromTsconfig/*Webpack,Vite,Object*/(pathToConfig: string)
-  .forJest/*Tsconfig,Webpack,Vite*/()
+alias(pathToRoot: string)
+  .fromXXX(pathToConfig: string) // XXX - Tsconfig, Webpack, Vite, Object
+  .toYYY() // YYY - Tsconfig, Webpack, Vite, Jest
 ```
 
 * ### Example
@@ -34,7 +34,7 @@ module.exports = {
   resolve: {
     alias: alias(__dirname) // __dirname for root dir
         .fromTsconfig('./tsconfig.json')
-        .forWebpack(),
+        .toWebpack(),
   },
   // ...
 };
@@ -45,7 +45,7 @@ module.exports = defineConfig({
   resolve: {
     alias: alias(__dirname) // __dirname for root dir
         .fromWebpack('./webpack.config.js')
-        .forVite(),
+        .toVite(),
   },
   // ...
 });

@@ -7,10 +7,10 @@ type Modificators = {
 };
 
 export interface IExporter {
-  forTsconfig: () => object
-  forWebpack: () => object
-  forVite: () => object
-  forJest: () => object
+  toTsconfig: () => object
+  toWebpack: () => object
+  toVite: () => object
+  toJest: () => object
 }
 
 export default function exporter(pathToRoot: string, aliases: Alias[]): IExporter {
@@ -23,28 +23,28 @@ export default function exporter(pathToRoot: string, aliases: Alias[]): IExporte
   }
 
   return {
-    forTsconfig() {
+    toTsconfig() {
       return transform({
         alias: (value) => value,
         path: (value) => [value],
       });
     },
 
-    forWebpack() {
+    toWebpack() {
       return transform({
         alias: (value) => value.replace('/*', ''),
         path: (value) => path.resolve(pathToRoot, value.replace('/*', '')),
       });
     },
 
-    forVite() {
+    toVite() {
       return transform({
         alias: (value) => value.replace('/*', ''),
         path: (value) => path.resolve(pathToRoot, value.replace('/*', '')),
       });
     },
 
-    forJest() {
+    toJest() {
       return transform({
         alias: (value) => value.replace('*', '(.*)'),
         path: (value) => value.replace('./', '<rootDir>/').replace('*', '$1'),
