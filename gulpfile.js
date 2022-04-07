@@ -6,9 +6,8 @@ const tsConfig = require('./tsconfig.json');
 
 gulp.task("default", function () {
   const tsResult = gulp.src('src/**/*.ts').pipe(ts(tsConfig.compilerOptions));
-  const output = gulp.dest('dist/');
   return merge([
-    tsResult.js.pipe(uglify()).pipe(output),
-    tsResult.dts.pipe(output), 
-  ]);
+    tsResult.js.pipe(uglify()),
+    tsResult.dts, 
+  ]).pipe(gulp.dest('dist/'));
 });

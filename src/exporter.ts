@@ -2,11 +2,12 @@ import path from 'path';
 import { Alias } from './types';
 
 type Modificators = {
-  alias: (value: string) => string
-  path: (value: string) => any
+  alias?: (value: string) => string
+  path?: (value: string) => any
 };
 
 export interface IExporter {
+  toObject: () => object
   toTsconfig: () => object
   toWebpack: () => object
   toVite: () => object
@@ -14,18 +15,21 @@ export interface IExporter {
 }
 
 export default function exporter(pathToRoot: string, aliases: Alias[]): IExporter {
-  function transform(modificators: Modificators) {
+  function transform(modificators: Modificators = {}) {
     return aliases.reduce((curr, alias) => {
-      const from = modificators.alias(alias.from);
-      const to = modificators.path(alias.to);
+      const from = modificators.alias ? modificators.alias(alias.from) : alias.from;
+      const to = modificators.path ? modificators.path(alias.to) : alias.to;
       return { ...curr, [from]: to };
     }, {});
   }
 
   return {
+    toObject() {
+      return transform();
+    },
+
     toTsconfig() {
       return transform({
-        alias: (value) => value,
         path: (value) => [value],
       });
     },

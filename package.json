@@ -1,7 +1,7 @@
 {
   "name": "alias-reuse",
   "description": "Parse exists config with aliases and export for webpack, vite, jest and others",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": [
     "alias",
     "config",
@@ -19,15 +19,19 @@
   },
   "main": "./dist/index.js",
   "scripts": {
-    "lint": "eslint ./src --fix",
+    "lint": "eslint ./src ./test --fix",
+    "test": "ts-mocha ./test/*.ts",
     "build": "gulp"
   },
   "devDependencies": {
     "@neki-dev/eslint-config": "github:neki-dev/eslint-config",
+    "@types/mocha": "^9.1.0",
     "@types/node": "^17.0.23",
     "gulp": "^4.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-uglify": "^3.0.2",
+    "merge2": "^1.4.1",
+    "ts-mocha": "^9.0.2",
     "typescript": "^4.6.3"
   },
   "repository": {
