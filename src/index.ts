@@ -1,5 +1,4 @@
-import aliasReuse from './importer';
+import importer from './importer';
 
-// export for commonjs
-// @ts-ignore
-export = aliasReuse;
+export default importer;
+export * from './types';

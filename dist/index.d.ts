@@ -1,2 +1,3 @@
-import aliasReuse from './importer';
-export = aliasReuse;
+import importer from './importer';
+export default importer;
+export * from './types';
