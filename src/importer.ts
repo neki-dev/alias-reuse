@@ -1,5 +1,3 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
 import path from 'path';
 import { Alias } from './types';
 import exporter, { IExporter } from './exporter';
