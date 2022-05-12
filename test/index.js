@@ -1,6 +1,6 @@
-import assert from 'assert';
-import path from 'path';
-import aliasReuse from '../src';
+const assert = require('assert');
+const path = require('path');
+const aliasReuse = require('../index.js');
 
 describe('alias reuse', () => {
   let alias;
