@@ -1,6 +1,7 @@
 {
-  "extends": [
-    "@neki-dev/eslint-config",
-    "@neki-dev/eslint-config/typescript"
-  ]
+  "extends": ["neki/js"],
+  "rules": {
+    "global-require": "off",
+    "import/no-dynamic-require": "off"
+  }
 }

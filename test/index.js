@@ -1,6 +1,6 @@
 const assert = require('assert');
 const path = require('path');
-const aliasReuse = require('../index.js');
+const aliasReuse = require('../src/index');
 
 describe('alias reuse', () => {
   let alias;
@@ -18,7 +18,7 @@ describe('alias reuse', () => {
       assert.equal(result[0][0], '~root/*');
       assert.equal(result[0][1], './src/*');
     });
-  
+
     it('should import from webpack', () => {
       const aliasWebpack = alias.fromWebpack('./mocks/webpack.config.js');
       const paths = aliasWebpack.toObject();
@@ -40,14 +40,14 @@ describe('alias reuse', () => {
 
   describe('export', () => {
     let aliasObject;
-  
+
     before(() => {
       aliasObject = alias.fromObject({
         '~root/*': './src/*',
         '~component/*': './src/components/*',
       });
     });
-  
+
     it('should export to tsconfig', () => {
       const paths = aliasObject.toTsconfig();
       const result = Object.entries(paths);
@@ -55,7 +55,7 @@ describe('alias reuse', () => {
       assert.equal(result[0][0], '~root/*');
       assert.equal(result[0][1][0], './src/*');
     });
-  
+
     it('should export to webpack', () => {
       const paths = aliasObject.toWebpack();
       const result = Object.entries(paths);
@@ -63,7 +63,7 @@ describe('alias reuse', () => {
       assert.equal(result[0][0], '~root');
       assert.equal(result[0][1], path.resolve(__dirname, 'src'));
     });
-  
+
     it('should export to vite', () => {
       const paths = aliasObject.toVite();
       const result = Object.entries(paths);
@@ -71,7 +71,7 @@ describe('alias reuse', () => {
       assert.equal(result[0][0], '~root');
       assert.equal(result[0][1], path.resolve(__dirname, 'src'));
     });
-  
+
     it('should export to jest', () => {
       const paths = aliasObject.toJest();
       const result = Object.entries(paths);
