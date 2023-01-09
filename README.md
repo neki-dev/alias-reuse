@@ -1,6 +1,6 @@
-## Alias reuse
+## ⚙️ Alias reuse
 [![Npm package version](https://badgen.net/npm/v/alias-reuse)](https://npmjs.com/package/alias-reuse)
-[![Small size](https://badge-size.herokuapp.com/neki-dev/alias-reuse/master/src/index.js)](https://github.com/neki-dev/alias-reuse/blob/master/src/index.js)
+[![Small size](https://img.badgesize.io/neki-dev/alias-reuse/master/src/index.js)](https://github.com/neki-dev/alias-reuse/blob/master/src/index.js)
 [![Testing](https://github.com/neki-dev/alias-reuse/actions/workflows/test.yml/badge.svg)](https://github.com/neki-dev/alias-reuse/actions/workflows/test.yml)
 
 Parse exists config with aliases and export for webpack, vite, jest and others
