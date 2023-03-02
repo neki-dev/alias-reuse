@@ -1,33 +1,42 @@
 const path = require('path');
 
 /**
+ * Convert aliases to target config
+ *
+ * @param {Object[]} aliases - Aliases list
+ * @param {Object} [modificators] - Convertation rules
+ */
+function writeConfig(aliases, modificators = {}) {
+  return aliases.reduce((curr, alias) => {
+    const from = modificators.alias
+      ? modificators.alias(alias.from)
+      : alias.from;
+    const to = modificators.path ? modificators.path(alias.to) : alias.to;
+
+    return { ...curr, [from]: to };
+  }, {});
+}
+
+/**
  * Create exporter instance.
  *
  * @param {string} pathToRoot - Root directory path
  * @param {Object[]} aliases - Aliases list
  */
 function exporter(pathToRoot, aliases) {
-  function transform(modificators = {}) {
-    return aliases.reduce((curr, alias) => {
-      const from = modificators.alias ? modificators.alias(alias.from) : alias.from;
-      const to = modificators.path ? modificators.path(alias.to) : alias.to;
-      return { ...curr, [from]: to };
-    }, {});
-  }
-
   return {
     /**
      * Convert paths to object.
      */
     toObject() {
-      return transform();
+      return writeConfig(aliases);
     },
 
     /**
      * Convert paths to Typescript config format.
      */
-    toTsconfig() {
-      return transform({
+    toTSConfig() {
+      return writeConfig(aliases, {
         path: (value) => [value],
       });
     },
@@ -36,7 +45,7 @@ function exporter(pathToRoot, aliases) {
      * Convert paths to Webpack config format.
      */
     toWebpack() {
-      return transform({
+      return writeConfig(aliases, {
         alias: (value) => value.replace('/*', ''),
         path: (value) => path.resolve(pathToRoot, value.replace('/*', '')),
       });
@@ -46,7 +55,7 @@ function exporter(pathToRoot, aliases) {
      * Convert paths to Vite config format.
      */
     toVite() {
-      return transform({
+      return writeConfig(aliases, {
         alias: (value) => value.replace('/*', ''),
         path: (value) => path.resolve(pathToRoot, value.replace('/*', '')),
       });
@@ -56,7 +65,7 @@ function exporter(pathToRoot, aliases) {
      * Convert paths to Jest config format.
      */
     toJest() {
-      return transform({
+      return writeConfig(aliases, {
         alias: (value) => value.replace('*', '(.*)'),
         path: (value) => value.replace('./', '<rootDir>/').replace('*', '$1'),
       });
@@ -65,68 +74,68 @@ function exporter(pathToRoot, aliases) {
 }
 
 /**
- * Create importer instance.
+ * Convert config to normalized object
  *
  * @param {string} pathToRoot - Root directory path
+ * @param {Object} config - Raw config
+ * @param {Object} [modificators] - Convertation rules
  */
-function importer(pathToRoot) {
-  function transform(source, modificators = {}) {
-    const aliases = Object.entries(source).map(([from, to]) => ({
-      from: modificators.alias ? modificators.alias(from) : from,
-      to: modificators.path ? modificators.path(to) : String(to),
-    }));
+function readConfig(pathToRoot, config, modificators = {}) {
+  const aliases = Object.entries(config).map(([from, to]) => ({
+    from: modificators.alias ? modificators.alias(from) : from,
+    to: modificators.path ? modificators.path(to) : String(to),
+  }));
 
-    return exporter(pathToRoot, aliases);
-  }
-
-  return {
-    /**
-     * Read paths from custom object.
-     *
-     * @param {Object} object - Custom object
-     */
-    fromObject(object) {
-      return transform(object);
-    },
-
-    /**
-     * Read paths from Typescript config
-     *
-     * @param {string?} pathToConfig - Path to config file
-     */
-    fromTsconfig(pathToConfig = 'tsconfig.json') {
-      const tsconfig = require(path.resolve(pathToRoot, pathToConfig));
-      return transform(tsconfig.compilerOptions.paths, {
-        path: (value) => value[0],
-      });
-    },
-
-    /**
-     * Read paths from Webpack config
-     *
-     * @param {string?} pathToConfig - Path to config file
-     */
-    fromWebpack(pathToConfig = 'webpack.config.js') {
-      const webpack = require(path.resolve(pathToRoot, pathToConfig));
-      return transform(webpack.resolve.alias, {
-        alias: (value) => `${value}/*`,
-        path: (value) => `./${path.relative(pathToRoot, value)}/*`,
-      });
-    },
-
-    /**
-     * Read paths from Vite config
-     *
-     * @param {string?} pathToConfig - Path to config file
-     */
-    fromVite(pathToConfig = 'vite.config.js') {
-      const vite = require(path.resolve(pathToRoot, pathToConfig));
-      return transform(vite.resolve.alias, {
-        alias: (value) => `${value}/*`,
-        path: (value) => `./${path.relative(pathToRoot, value)}/*`,
-      });
-    },
-  };
+  return exporter(pathToRoot, aliases);
 }
 
-module.exports = importer;
+/**
+ * Read aliases from config.
+ *
+ * @param {string} pathToRoot - Root directory path
+ * @param {string} pathToConfig - Aliases config path
+ */
+function fromFile(pathToRoot, pathToConfig) {
+  const config = require(path.resolve(pathToRoot, pathToConfig));
+
+  // tsconfig
+  if (config.compilerOptions) {
+    if (config.compilerOptions.paths) {
+      return readConfig(pathToRoot, config.compilerOptions.paths, {
+        path: (value) => value[0],
+      });
+    }
+
+    return readConfig(pathToRoot, {});
+  }
+
+  // webpack or vite
+  if (config.resolve) {
+    if (config.resolve.alias) {
+      return readConfig(pathToRoot, config.resolve.alias, {
+        alias: (value) => `${value}/*`,
+        path: (value) => `./${path.relative(pathToRoot, value)}/*`,
+      });
+    }
+
+    return readConfig(pathToRoot, {});
+  }
+
+  // custom config
+  return readConfig(pathToRoot, config);
+}
+
+/**
+ * Read aliases from object.
+ *
+ * @param {string} pathToRoot - Root directory path
+ * @param {Object} config - Aliases object
+ */
+function fromObject(pathToRoot, config) {
+  return readConfig(pathToRoot, config);
+}
+
+module.exports = {
+  fromFile,
+  fromObject,
+};
