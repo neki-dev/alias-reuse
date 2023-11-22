@@ -1,7 +1,7 @@
 {
   "name": "alias-reuse",
   "description": "Parse custom or exists config with aliases and export for webpack, vite, jest and others",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "keywords": [
     "alias",
     "config",

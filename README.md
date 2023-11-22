@@ -42,10 +42,11 @@ ac.toObject();
 
 ```js
 const alias = require('alias-reuse');
+const tsConfigPath = path.join(__dirname, 'tsconfig.json');
 
 module.exports = {
   resolve: {
-    alias: alias.fromFile(__dirname, './tsconfig.json')
+    alias: alias.fromFile(__dirname, tsConfigPath)
         .toWebpack(),
   },
   // ...
@@ -58,7 +59,7 @@ const alias = require('alias-reuse');
 
 module.exports = {
   compilerOptions: {
-    paths: alias.fromFile(__dirname, './customConfig.js')
+    paths: alias.fromFile(__dirname, 'path/to/config.js')
         .toTSConfig(),
   },
   // ...
