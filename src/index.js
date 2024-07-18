@@ -96,7 +96,7 @@ function readConfig(pathToRoot, config, modificators = {}) {
  * @param {string} pathToConfig - Aliases config path
  */
 function fromFile(pathToRoot, pathToConfig) {
-  const config = require(pathToConfig);
+  const config = require(path.resolve(pathToRoot, pathToConfig));
 
   // tsconfig
   if (config.compilerOptions) {
