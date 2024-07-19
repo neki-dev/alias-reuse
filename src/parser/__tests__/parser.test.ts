@@ -3,6 +3,8 @@ import path from "path";
 import { Parser } from "../index";
 
 describe("parser", () => {
+  global.__non_webpack_require__ = require;
+
   it("should parse ts config", () => {
     const records = new Parser().from(
       path.resolve(__dirname, "../__mocks__/tsconfig.json"),
