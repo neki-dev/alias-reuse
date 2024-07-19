@@ -1,7 +1,7 @@
-name: build
+name: test
 on: push
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -10,5 +10,5 @@ jobs:
           node-version: '20.x'
       - name: Installing
         run: yarn install
-      - name: Building
-        run: yarn build
+      - name: Testing
+        run: yarn test
