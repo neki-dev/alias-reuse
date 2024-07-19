@@ -20,7 +20,7 @@ export class Parser {
    */
   public from(filePath: string): Exporter;
   public from(entry: string | Record<string, string>): Exporter {
-    const config = typeof entry === "string" ? require(entry) : entry;
+    const config = typeof entry === "string" ? __non_webpack_require__(entry) : entry;
 
     this.pathToConfig =
       typeof entry === "string" ? path.dirname(entry) : __dirname;
