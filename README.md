@@ -1,6 +1,6 @@
 ## ⚙️ Alias reuse
 [![Version](https://badgen.net/npm/v/alias-reuse)](https://npmjs.com/package/alias-reuse)
-[![Small size](https://img.badgesize.io/neki-dev/alias-reuse/master/src/index.js)](https://github.com/neki-dev/alias-reuse/blob/master/src/index.js)
+[![Small size](https://img.badgesize.io/neki-dev/alias-reuse/master/dist/index.js)](https://github.com/neki-dev/alias-reuse/blob/master/dist/index.js)
 [![Build](https://github.com/neki-dev/alias-reuse/actions/workflows/build.yml/badge.svg)](https://github.com/neki-dev/alias-reuse/actions/workflows/build.yml)
 
 Reuse custom or existing aliases from one configuration in others.

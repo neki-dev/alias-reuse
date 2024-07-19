@@ -1,7 +1,7 @@
 {
   "name": "alias-reuse",
   "description": "Reuse custom or existing aliases from one configuration in others",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "keywords": [
     "alias",
     "path",
