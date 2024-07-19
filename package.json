@@ -1,17 +1,16 @@
 {
   "name": "alias-reuse",
-  "description": "Parse custom or exists config with aliases and export for webpack, vite, jest and others",
-  "version": "2.0.2",
+  "description": "Reuse custom or existing aliases from one configuration in others",
+  "version": "3.0.0",
   "keywords": [
     "alias",
+    "path",
     "config",
     "reuse",
     "webpack",
     "vite",
     "tsconfig",
-    "jest",
-    "global",
-    "once"
+    "jest"
   ],
   "license": "MIT",
   "author": {
@@ -19,13 +18,26 @@
     "email": "dev@neki.guru",
     "url": "https://neki.guru/"
   },
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "lint": "eslint \"./src/**/*.js\" --fix",
-    "test": "mocha ./test/*.js"
+    "build": "webpack --mode production",
+    "test": "jest",
+    "lint": "eslint \"./src/**/*.ts\" --fix"
   },
   "devDependencies": {
-    "mocha": "^10.2.0"
+    "@typescript-eslint/eslint-plugin": "7.16.1",
+    "@typescript-eslint/parser": "7.16.1",
+    "@types/jest": "29.5.12",
+    "@types/node": "20.14.11",
+    "eslint": "8.56.0",
+    "eslint-plugin-import": "2.29.1",
+    "jest": "29.7.0",
+    "ts-jest": "29.1.2",
+    "ts-loader": "9.5.1",
+    "typescript": "5.5.3",
+    "typescript-eslint": "7.16.1",
+    "webpack": "5.93.0",
+    "webpack-cli": "5.1.4"
   },
   "repository": {
     "type": "git",

@@ -3,75 +3,104 @@
 [![Small size](https://img.badgesize.io/neki-dev/alias-reuse/master/src/index.js)](https://github.com/neki-dev/alias-reuse/blob/master/src/index.js)
 [![Testing](https://github.com/neki-dev/alias-reuse/actions/workflows/test.yml/badge.svg)](https://github.com/neki-dev/alias-reuse/actions/workflows/test.yml)
 
-Parse custom or exists config with aliases and export for webpack, vite, jest and others
-
-* Read from `TSConfig`, `Webpack`, `Vite`, `CustomFile` or `Object`
-* Convert to `TSConfig`, `Webpack`, `Vite`, `Jest` or `Object`
+Reuse custom or existing aliases from one configuration in others.
 
 .
 
-* ### Install
+## Install
 
 ```sh
 npm i alias-reuse --save-dev
 ```
 
-* ### Usage
+.
 
-```js
-const alias = require('alias-reuse');
+## Usage
 
-// Read from config file
-const ac = alias.fromFile(pathToRoot: string, pathToConfig: string);
-// Or read from object
-const ac = alias.fromObject(pathToRoot: string, config: Object);
+### Import 
+Import aliases from existing configuration.
+The library will automatically detect the configuration source type.
 
-// Convert to TS config
-ac.toTSConfig();
-// Or convert to Webpack config
-ac.toWebpack();
-// Or convert to Vite config
-ac.toVite();
-// Or convert to Jest config
-ac.toJest();
-// Or convert to object
-ac.toObject();
+Supported configuration sources:
+* `tsconfig`
+* `webpack` / `vite`
+* `object`
+```ts
+reuse().from(pathToConfig: string);
+```
+... and also from custom object.
+```ts
+reuse().from(config: Record<string, string>);
 ```
 
-* ### Example for `webpack.config.js`
+### Configure
+Set custom root directory.
+```ts
+reuse().from(...).at(pathToRoot: string);
+```
+
+### Export 
+Export of aliases in a required configuration target.
+
+Supported configuration targets:
+* `tsconfig`
+* `webpack` / `vite`
+* `jest`
+* `object`
+```ts
+reuse().from(...).for(target: string);
+```
+
+.
+
+## Examples
+
+* #### Example for Webpack
 
 ```js
-const alias = require('alias-reuse');
-const tsConfigPath = path.join(__dirname, 'tsconfig.json');
+const { reuse } = require('alias-reuse');
+const tsconfigPath = path.join(__dirname, 'tsconfig.json');
 
 module.exports = {
   resolve: {
-    alias: alias.fromFile(__dirname, tsConfigPath)
-        .toWebpack(),
+    alias: reuse()
+      .from(tsconfigPath) // Import aliases from tsconfig.json
+      .for("webpack"), // And convert to webpack format
   },
   // ...
 };
 ```
-* ### Example for `tsconfig.js`
+
+* #### Example for TSConfig
 
 ```js
-const alias = require('alias-reuse');
+const { reuse } = require('alias-reuse');
+const configPath = path.join(__dirname, 'configs/aliases.json');
 
 module.exports = {
   compilerOptions: {
-    paths: alias.fromFile(__dirname, 'path/to/config.js')
-        .toTSConfig(),
+    paths: reuse()
+      .from(configPath) // Import aliases from custom config
+      .for("tsconfig"), // And convert to tsconfig format
   },
   // ...
 };
 ```
 
-* ### Example of custom config file
+* #### Example with custom root directory
 
 ```js
-module.exports = {
-  "~root/*": "./src/*",
-  "~components/*": "./src/components/*",
-};
+const { reuse } = require('alias-reuse');
+const rootPath = path.join(__dirname, 'root');
+const configPath = path.join(__dirname, 'configs/aliases.json');
 
+module.exports = {
+  resolve: {
+    alias: reuse()
+      .from(configPath) // Import aliases from custom config
+      .at(rootPath) // Set root directory
+      .for("vite"), // And convert to vite format
+  },
+  // ...
+};
 ```

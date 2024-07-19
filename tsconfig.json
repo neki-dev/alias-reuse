@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "commonjs",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "types": ["jest", "node"],
+  },
+  "exclude": [
+    "./src/**/__tests__/**",
+    "./src/**/__mocks__/**"
+  ]
+}
