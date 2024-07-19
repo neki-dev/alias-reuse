@@ -1,5 +1,5 @@
 import { Record } from "../record";
-import { ExporterTarget } from "./types";
+import type { ExporterTarget } from "./types";
 export declare class Exporter {
     readonly records: Record[];
     private pathToRoot;
