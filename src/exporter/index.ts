@@ -1,8 +1,8 @@
-import path from "path";
+import path from 'path';
 
-import { Record } from "../record";
+import { Record } from '../record';
 
-import type { ExporterModificators, ExporterTarget } from "./types";
+import type { ExporterModificators, ExporterTarget } from './types';
 
 export class Exporter {
   public readonly records: Record[] = [];
@@ -43,18 +43,15 @@ export class Exporter {
         path: (value) => [value],
       });
 
-      case 'vite':
-      case 'webpack': return this.export({
-        alias: (value) =>
-          value.substring(value.length - 2, value.length) === "/*"
-            ? value.replace("/*", "")
-            : value + "$",
-        path: (value) => value.replace("/*", ""),
+      case 'jest': return this.export({
+        alias: (value) => '^' + value.replace(/\*/g, '(.*)') + '$',
+        path: (value) => value.replace('*', '$1'),
       });
 
-      case 'jest': return this.export({
-        alias: (value) => value.replace("*", "(.*)"),
-        path: (value) => value.replace("*", "$1"),
+      case 'vite':
+      case 'webpack': return this.export({
+        alias: (value) => value.replace(/(\\|\/)\*$/, ''),
+        path: (value) => value.replace(/(\\|\/)\*$/, ''),
       });
 
       default: return this.export();

@@ -1,4 +1,4 @@
-import { Exporter } from "../exporter";
+import { Exporter } from '../exporter';
 export declare class Parser {
     private pathToConfig;
     /**

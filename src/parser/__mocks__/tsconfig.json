@@ -2,8 +2,8 @@
   "compilerOptions": {
     "paths": {
       "~root/*": ["../src/*"],
-      "components/*": ["./src/components/*"],
-      "config": ["/var/config"]
+      "components/*": ["./components/*"],
+      "config": ["/etc/config"]
     }
   }
 }
